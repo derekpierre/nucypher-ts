@@ -21,9 +21,9 @@ import {
   getCombineDecryptionSharesFunction,
   getVariantClass,
 } from '../dkg';
+import { Porter } from '../porter';
 import { fromHexString, fromJSON, toJSON } from '../utils';
 
-import { Porter } from './porter';
 
 export type CbdTDecDecrypterJSON = {
   porterUri: string;
@@ -104,10 +104,12 @@ export class CbdTDecDecrypter {
       encryptedRequests,
       this.threshold
     );
-    // TODO: How many errors are acceptable? Less than (threshold - shares)?
-    if (Object.keys(errors).length > 0) {
+    if (Object.entries(encryptedResponses).length < this.threshold) {
+      // insufficient responses
       throw new Error(
-        `CBD decryption failed with errors: ${JSON.stringify(errors)}`
+        `Threshold of responses not met; CBD decryption failed with errors: ${JSON.stringify(
+          errors
+        )}`
       );
     }
     return this.makeDecryptionShares(

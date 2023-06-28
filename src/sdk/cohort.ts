@@ -1,4 +1,4 @@
-import { Porter } from '../characters/porter';
+import { Porter } from '../porter';
 import { ChecksumAddress } from '../types';
 import { objectEquals } from '../utils';
 

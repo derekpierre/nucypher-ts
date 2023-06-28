@@ -9,9 +9,9 @@ import {
 import axios, { AxiosResponse } from 'axios';
 import qs from 'qs';
 
-import { ConditionContext } from '../conditions';
-import { Base64EncodedBytes, ChecksumAddress, HexEncodedBytes } from '../types';
-import { fromBase64, fromHexString, toBase64, toHexString } from '../utils';
+import { ConditionContext } from './conditions';
+import { Base64EncodedBytes, ChecksumAddress, HexEncodedBytes } from './types';
+import { fromBase64, fromHexString, toBase64, toHexString } from './utils';
 
 // /get_ursulas
 export type Ursula = {
@@ -26,7 +26,7 @@ type GetUrsulasRequest = {
   readonly include_ursulas?: readonly ChecksumAddress[];
 };
 
-type UrsulaResponse = {
+type GetUrsulasResponse = {
   readonly checksum_address: ChecksumAddress;
   readonly uri: string;
   readonly encrypting_key: HexEncodedBytes;
@@ -34,7 +34,7 @@ type UrsulaResponse = {
 
 export type GetUrsulasResult = {
   readonly result: {
-    readonly ursulas: readonly UrsulaResponse[];
+    readonly ursulas: readonly GetUrsulasResponse[];
   };
   readonly version: string;
 };
@@ -114,7 +114,7 @@ export class Porter {
         },
       }
     );
-    return resp.data.result.ursulas.map((u: UrsulaResponse) => ({
+    return resp.data.result.ursulas.map((u: GetUrsulasResponse) => ({
       checksumAddress: u.checksum_address,
       uri: u.uri,
       encryptingKey: PublicKey.fromCompressedBytes(

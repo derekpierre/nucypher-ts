@@ -12,9 +12,9 @@ import { Condition, ConditionContext } from '../conditions';
 import { Keyring } from '../keyring';
 import { PolicyMessageKit } from '../kits/message';
 import { RetrievalResult } from '../kits/retrieval';
+import { Porter } from '../porter';
 import { base64ToU8Receiver, bytesEquals, toJSON, zip } from '../utils';
 
-import { Porter } from './porter';
 
 export type PreTDecDecrypterJSON = {
   porterUri: string;

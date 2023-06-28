@@ -17,7 +17,7 @@ import {
 import { ChecksumAddress } from '../types';
 
 import { RemoteBob } from './bob';
-import { Porter } from './porter';
+import { Porter } from '../porter';
 
 export class Alice {
   private readonly porter: Porter;

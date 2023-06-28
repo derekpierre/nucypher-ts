@@ -40,15 +40,15 @@ import { keccak256 } from 'ethers/lib/utils';
 import { Alice, Bob, Cohort, Configuration, RemoteBob } from '../src';
 import { DkgCoordinatorAgent, DkgParticipant } from '../src/agents/coordinator';
 import { CbdTDecDecrypter } from '../src/characters/cbd-recipient';
+import { DkgClient, DkgRitual, FerveoVariant } from '../src/dkg';
+import { BlockchainPolicy, PreEnactedPolicy } from '../src/policies/policy';
 import {
   CbdDecryptResult,
   GetUrsulasResult,
   Porter,
   RetrieveCFragsResult,
   Ursula,
-} from '../src/characters/porter';
-import { DkgClient, DkgRitual, FerveoVariant } from '../src/dkg';
-import { BlockchainPolicy, PreEnactedPolicy } from '../src/policies/policy';
+} from '../src/porter';
 import { ChecksumAddress } from '../src/types';
 import { toBytes, toHexString, zip } from '../src/utils';
 

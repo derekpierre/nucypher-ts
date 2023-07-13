@@ -18,6 +18,7 @@ import {
   EncryptedTreasureMap,
   EthereumAddress,
   ferveoEncrypt,
+  FerveoVariant,
   FerveoPublicKey,
   Keypair,
   PublicKey,
@@ -47,7 +48,7 @@ import {
   RetrieveCFragsResult,
   Ursula,
 } from '../src/characters/porter';
-import { DkgClient, DkgRitual, FerveoVariant } from '../src/dkg';
+import { DkgClient, DkgRitual } from '../src/dkg';
 import { BlockchainPolicy, PreEnactedPolicy } from '../src/policies/policy';
 import { ChecksumAddress } from '../src/types';
 import { toBytes, toHexString, zip } from '../src/utils';
@@ -215,14 +216,14 @@ export const mockDetectEthereumProvider = () => {
 };
 
 export const fakeDkgFlow = (
-  variant: FerveoVariant | FerveoVariant.Precomputed,
+  variant: FerveoVariant,
   ritualId: number,
   sharesNum: number,
   threshold: number
 ) => {
   if (
-    variant !== FerveoVariant.Simple &&
-    variant !== FerveoVariant.Precomputed
+    !variant.equals(FerveoVariant.simple) &&
+    !variant.equals(FerveoVariant.precomputed)
   ) {
     throw new Error(`Invalid variant: ${variant}`);
   }
@@ -319,20 +320,22 @@ export const fakeTDecFlow = ({
     }
 
     let decryptionShare;
-    if (variant === FerveoVariant.Precomputed) {
+    if (variant.equals(FerveoVariant.precomputed)) {
       decryptionShare = aggregate.createDecryptionSharePrecomputed(
         dkg,
         ciphertext,
         aad,
         keypair
       );
-    } else {
+    } else if (variant.equals(FerveoVariant.simple)) {
       decryptionShare = aggregate.createDecryptionShareSimple(
         dkg,
         ciphertext,
         aad,
         keypair
       );
+    } else {
+      throw new Error(`Invalid variant: ${variant}`);
     }
     decryptionShares.push(decryptionShare);
   });
@@ -341,10 +344,12 @@ export const fakeTDecFlow = ({
   // This part is in the client API
 
   let sharedSecret;
-  if (variant === FerveoVariant.Precomputed) {
+  if (variant.equals(FerveoVariant.precomputed)) {
     sharedSecret = combineDecryptionSharesPrecomputed(decryptionShares);
-  } else {
+  } else if (variant.equals(FerveoVariant.simple)) {
     sharedSecret = combineDecryptionSharesSimple(decryptionShares);
+  } else {
+    throw new Error(`Invalid variant: ${variant}`);
   }
 
   // The client should have access to the public parameters of the DKG
@@ -399,7 +404,7 @@ export const fakeCoordinatorRitual = (
   publicKeyHash: string;
   totalAggregations: number;
 } => {
-  const ritual = fakeDkgTDecFlowE2e(FerveoVariant.Precomputed);
+  const ritual = fakeDkgTDecFlowE2e(FerveoVariant.precomputed);
   const dkgPkBytes = ritual.dkg.publicKey().toBytes();
   return {
     id: ritualId,
@@ -421,7 +426,7 @@ export const fakeCoordinatorRitual = (
 
 export const fakeDkgParticipants = (
   ritualId: number,
-  variant = FerveoVariant.Precomputed
+  variant = FerveoVariant.precomputed
 ): {
   participants: DkgParticipant[];
   participantSecrets: Record<string, SessionStaticSecret>;

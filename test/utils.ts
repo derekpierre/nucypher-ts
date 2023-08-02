@@ -41,7 +41,7 @@ import { keccak256 } from 'ethers/lib/utils';
 import { Alice, Bob, Cohort, Configuration, RemoteBob } from '../src';
 import { DkgCoordinatorAgent, DkgParticipant } from '../src/agents/coordinator';
 import { ThresholdDecrypter } from '../src/characters/cbd-recipient';
-import { DkgClient, DkgRitual, FerveoVariant } from '../src/dkg';
+import { DkgClient, DkgRitual } from '../src/dkg';
 import { BlockchainPolicy, PreEnactedPolicy } from '../src/policies/policy';
 import {
   CbdDecryptResult,

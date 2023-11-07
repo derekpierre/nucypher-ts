@@ -3,7 +3,7 @@ import { beforeAll, describe, expect, it } from 'vitest';
 
 import { initialize } from '../../src';
 import { ConditionContext } from '../../src/conditions';
-import {CompoundCondition} from "../../src/conditions/base";
+import { CompoundCondition } from '../../src/conditions/base';
 
 describe('conditions', () => {
   beforeAll(async () => {

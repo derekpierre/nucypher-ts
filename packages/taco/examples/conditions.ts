@@ -82,7 +82,7 @@ console.assert(
   'CompoundCondition requires signer',
 );
 
-const myFunctionAbi: conditions.FunctionAbiProps = {
+const myFunctionAbi: conditions.base.FunctionAbiProps = {
   name: 'myFunction',
   type: 'function',
   stateMutability: 'view',

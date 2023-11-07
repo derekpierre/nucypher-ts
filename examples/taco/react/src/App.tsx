@@ -71,7 +71,7 @@ function App() {
     const signer = provider.getSigner();
 
     console.log('Encrypting message...');
-    const hasPositiveBalance = new conditions.RpcCondition({
+    const hasPositiveBalance = new conditions.base.RpcCondition({
       chain: 80001,
       method: 'eth_getBalance',
       parameters: [':userAddress', 'latest'],

@@ -2,7 +2,8 @@ import { fakeProvider, fakeSigner } from '@nucypher/test-utils';
 import { beforeAll, describe, expect, it } from 'vitest';
 
 import { initialize } from '../../src';
-import { CompoundCondition, ConditionContext } from '../../src/conditions';
+import { ConditionContext } from '../../src/conditions';
+import {CompoundCondition} from "../../src/conditions/base";
 
 describe('conditions', () => {
   beforeAll(async () => {

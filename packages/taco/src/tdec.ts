@@ -23,11 +23,8 @@ import {
 import { ethers } from 'ethers';
 import { arrayify, keccak256 } from 'ethers/lib/utils';
 
-import {
-  ConditionContext,
-  ConditionExpression,
-  CustomContextParam,
-} from './conditions';
+import { ConditionExpression } from './conditions/condition-expr';
+import { ConditionContext, CustomContextParam } from './conditions/context';
 
 export const encryptMessage = async (
   plaintext: Uint8Array | string,

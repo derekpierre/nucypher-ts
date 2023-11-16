@@ -34,7 +34,6 @@ import {
 } from '@nucypher/test-utils';
 import { SpyInstance, vi } from 'vitest';
 
-import { ConditionExpression } from '../src/conditions';
 import {
   ContractConditionProps,
   ContractConditionType,
@@ -46,7 +45,8 @@ import {
   TimeConditionType,
 } from '../src/conditions/base';
 import { TimeConditionMethod } from "../src/conditions/base/time";
-import { ERC721Balance } from '../src/conditions/predefined';
+import {ConditionExpression} from "../src/conditions/condition-expr";
+import {ERC721Balance} from "../src/conditions/predefined/erc721";
 import { DkgClient, DkgRitual } from '../src/dkg';
 import { encryptMessage } from '../src/tdec';
 

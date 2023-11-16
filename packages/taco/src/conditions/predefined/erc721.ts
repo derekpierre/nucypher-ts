@@ -1,8 +1,4 @@
-import {
-  ContractCondition,
-  ContractConditionProps,
-  ContractConditionType,
-} from '../base';
+import { ContractCondition, ContractConditionProps, ContractConditionType } from '../base/contract';
 import { USER_ADDRESS_PARAM } from '../const';
 
 type ERC721OwnershipFields = 'contractAddress' | 'chain' | 'parameters';

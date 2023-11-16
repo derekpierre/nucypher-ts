@@ -4,6 +4,8 @@ import { SUPPORTED_CHAIN_IDS } from '../const';
 import createUnionSchema from '../zod';
 
 import { EthAddressOrUserAddressSchema, returnValueTestSchema } from './shared';
+import { OmitConditionType } from '.';
+import { Condition } from '../condition';
 
 export const RpcConditionType = 'rpc';
 
@@ -20,3 +22,11 @@ export const rpcConditionSchema = z.object({
 });
 
 export type RpcConditionProps = z.infer<typeof rpcConditionSchema>;
+export class RpcCondition extends Condition {
+  constructor(value: OmitConditionType<RpcConditionProps>) {
+    super(rpcConditionSchema, {
+      conditionType: RpcConditionType,
+      ...value,
+    });
+  }
+}

@@ -2,7 +2,7 @@ import {fakeProvider, fakeSigner} from '@nucypher/test-utils';
 import {beforeAll, describe, expect, it} from 'vitest';
 
 import {initialize} from '../../src';
-import {CompoundCondition} from '../../src/conditions/base';
+import { CompoundCondition } from '../../src/conditions/compound-condition';
 import {ConditionContext} from "../../src/conditions/context";
 
 describe('conditions', () => {

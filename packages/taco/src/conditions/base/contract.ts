@@ -4,6 +4,8 @@ import { z } from 'zod';
 import { ETH_ADDRESS_REGEXP } from '../const';
 
 import { rpcConditionSchema } from './rpc';
+import { OmitConditionType } from '.';
+import { Condition } from '../condition';
 
 // TODO: Consider replacing with `z.unknown`:
 //    Since Solidity types are tied to Solidity version, we may not be able to accurately represent them in Zod.
@@ -95,3 +97,12 @@ export const contractConditionSchema = rpcConditionSchema
   );
 
 export type ContractConditionProps = z.infer<typeof contractConditionSchema>;
+
+export class ContractCondition extends Condition {
+  constructor(value: OmitConditionType<ContractConditionProps>) {
+    super(contractConditionSchema, {
+      conditionType: ContractConditionType,
+      ...value,
+    });
+  }
+}

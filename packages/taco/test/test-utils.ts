@@ -34,21 +34,15 @@ import {
 } from '@nucypher/test-utils';
 import { SpyInstance, vi } from 'vitest';
 
-import {
-  ContractConditionProps,
-  ContractConditionType,
-  FunctionAbiProps,
-  ReturnValueTestProps,
-  RpcConditionProps,
-  RpcConditionType,
-  TimeConditionProps,
-  TimeConditionType,
-} from '../src/conditions/base';
-import { TimeConditionMethod } from "../src/conditions/base/time";
+import { ContractConditionProps, ContractConditionType, FunctionAbiProps } from "../src/conditions/base/contract"
+import { RpcConditionProps, RpcConditionType } from "../src/conditions/base/rpc"
+import { TimeConditionMethod, TimeConditionProps,
+  TimeConditionType, } from "../src/conditions/base/time";
 import {ConditionExpression} from "../src/conditions/condition-expr";
 import {ERC721Balance} from "../src/conditions/predefined/erc721";
 import { DkgClient, DkgRitual } from '../src/dkg';
 import { encryptMessage } from '../src/tdec';
+import { ReturnValueTestProps } from '../src/conditions/base/shared';
 
 export const fakeDkgTDecFlowE2E: (
   ritualId?: number,

@@ -3,6 +3,8 @@ import { z } from 'zod';
 import { contractConditionSchema } from './base/contract';
 import { rpcConditionSchema } from './base/rpc';
 import { timeConditionSchema } from './base/time';
+import { OmitConditionType, ConditionOrProps } from './base';
+import { Condition } from './condition';
 
 export const CompoundConditionType = 'compound';
 
@@ -47,3 +49,39 @@ export const compoundConditionSchema: z.ZodSchema = z
   );
 
 export type CompoundConditionProps = z.infer<typeof compoundConditionSchema>;
+export class CompoundCondition extends Condition {
+  constructor(value: OmitConditionType<CompoundConditionProps>) {
+    super(compoundConditionSchema, {
+      conditionType: CompoundConditionType,
+      ...value,
+    });
+  }
+
+  private static withOperator(
+    operands: ConditionOrProps[],
+    operator: 'or' | 'and' | 'not'
+  ): CompoundCondition {
+    const asObjects = operands.map((operand) => {
+      if (operand instanceof Condition) {
+        return operand.toObj();
+      }
+      return operand;
+    });
+    return new CompoundCondition({
+      operator,
+      operands: asObjects,
+    });
+  }
+
+  public static or(conditions: ConditionOrProps[]): CompoundCondition {
+    return CompoundCondition.withOperator(conditions, 'or');
+  }
+
+  public static and(conditions: ConditionOrProps[]): CompoundCondition {
+    return CompoundCondition.withOperator(conditions, 'and');
+  }
+
+  public static not(condition: ConditionOrProps): CompoundCondition {
+    return CompoundCondition.withOperator([condition], 'not');
+  }
+}

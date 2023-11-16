@@ -5,6 +5,7 @@ import { SemVer } from 'semver';
 
 import { Condition } from './condition';
 import { ConditionContext, CustomContextParam } from './context';
+import { ConditionFactory } from '.';
 
 const ERR_VERSION = (provided: string, current: string) =>
   `Version provided, ${provided}, is incompatible with current version, ${current}`;
@@ -43,7 +44,7 @@ export class ConditionExpression {
       throw new Error(ERR_CONDITION(obj.condition));
     }
 
-    const condition = Condition.fromObj(obj.condition);
+    const condition = ConditionFactory.conditionFromProps(obj.condition);
     return new ConditionExpression(condition, obj.version);
   }
 

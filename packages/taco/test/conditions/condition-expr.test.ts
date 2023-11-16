@@ -4,15 +4,10 @@ import { TEST_CHAIN_ID, TEST_CONTRACT_ADDR } from '@nucypher/test-utils';
 import { SemVer } from 'semver';
 import { beforeAll, describe, expect, it } from 'vitest';
 
-import {
-  CompoundCondition,
-  ContractCondition,
-  ContractConditionProps,
-  RpcCondition,
-  RpcConditionType,
-  TimeCondition,
-  TimeConditionProps,
-} from '../../src/conditions/base';
+import { CompoundCondition } from '../../src/conditions/compound-condition';
+import { TimeCondition, TimeConditionProps } from '../../src/conditions/base/time';
+import { RpcCondition, RpcConditionType } from '../../src/conditions/base/rpc';
+import { ContractCondition, ContractConditionProps } from '../../src/conditions/base/contract';
 import {ConditionExpression} from "../../src/conditions/condition-expr";
 import { USER_ADDRESS_PARAM } from '../../src/conditions/const';
 import {ERC721Balance} from "../../src/conditions/predefined/erc721";

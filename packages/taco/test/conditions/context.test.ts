@@ -4,7 +4,8 @@ import { ethers } from 'ethers';
 import { beforeAll, describe, expect, it } from 'vitest';
 
 import { toBytes, toHexString } from '../../src';
-import { ContractCondition, RpcCondition } from '../../src/conditions/base';
+import { RpcCondition } from '../../src/conditions/base/rpc';
+import { ContractCondition } from '../../src/conditions/base/contract';
 import {ConditionExpression} from "../../src/conditions/condition-expr";
 import { USER_ADDRESS_PARAM } from '../../src/conditions/const';
 import {CustomContextParam, RESERVED_CONTEXT_PARAMS} from '../../src/conditions/context/context';

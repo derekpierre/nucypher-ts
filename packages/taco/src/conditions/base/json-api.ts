@@ -1,4 +1,4 @@
-import { parse } from 'jsonpath';
+import { JSONPath } from '@astronautlabs/jsonpath';
 import { z } from 'zod';
 
 import { Condition } from '../condition';
@@ -8,7 +8,7 @@ export const JsonApiConditionType = 'json-api';
 
 const validateJSONPath = (jsonPath: string): boolean => {
   try {
-    parse(jsonPath);
+    JSONPath.parse(jsonPath);
     return true;
   } catch (error) {
     return false;

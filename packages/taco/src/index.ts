@@ -11,7 +11,7 @@ export {
 
 export * as conditions from './conditions';
 // TODO(#324): Expose registerEncrypters from taco API
-export { decrypt, encrypt, encryptWithPublicKey, isAuthorized } from './taco';
+export { decrypt, encrypt, encryptWithPublicKey } from './taco';
 
 // TODO: Remove this re-export once `@nucypher/taco-auth` is mature and published
 export {

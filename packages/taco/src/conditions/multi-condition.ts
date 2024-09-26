@@ -1,13 +1,17 @@
+import { boolean } from 'zod';
+
 import { CompoundConditionType } from './compound-condition';
 import { ConditionProps } from './condition';
+import { IfThenElseConditionType } from './if-then-else-condition';
 import { ConditionVariableProps, SequentialConditionType } from './sequential';
 
 export const maxNestedDepth =
   (maxDepth: number) =>
-  (condition: ConditionProps, currentDepth = 1) => {
+  (condition: ConditionProps, currentDepth = 1): boolean => {
     if (
       condition.conditionType === CompoundConditionType ||
-      condition.conditionType === SequentialConditionType
+      condition.conditionType === SequentialConditionType ||
+      condition.conditionType === IfThenElseConditionType
     ) {
       if (currentDepth > maxDepth) {
         // no more multi-condition types allowed at this level
@@ -18,11 +22,20 @@ export const maxNestedDepth =
         return condition.operands.every((child: ConditionProps) =>
           maxNestedDepth(maxDepth)(child, currentDepth + 1),
         );
-      } else {
+      } else if (condition.conditionType == SequentialConditionType) {
         return condition.conditionVariables.every(
           (child: ConditionVariableProps) =>
             maxNestedDepth(maxDepth)(child.condition, currentDepth + 1),
         );
+      } else {
+        // do something
+        const ifThenElseConditions = [];
+        ifThenElseConditions.push(condition.ifCondition);
+        ifThenElseConditions.push(condition.thenCondition);
+        if (!(condition.elseCondition instanceof boolean)) {
+          ifThenElseConditions.push(condition.elseCondition);
+        }
+        return maxNestedDepth(maxDepth)(ifThenElseConditions, currentDepth + 1);
       }
     }
 

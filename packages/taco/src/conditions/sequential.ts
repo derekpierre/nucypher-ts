@@ -5,6 +5,7 @@ import { rpcConditionSchema } from './base/rpc';
 import { timeConditionSchema } from './base/time';
 import { compoundConditionSchema } from './compound-condition';
 import { baseConditionSchema, Condition } from './condition';
+import { ifThenElseConditionSchema } from './if-then-else-condition';
 import { maxNestedDepth } from './multi-condition';
 import { OmitConditionType, plainStringSchema } from './shared';
 
@@ -19,6 +20,7 @@ export const conditionVariableSchema: z.ZodSchema = z.object({
       contractConditionSchema,
       compoundConditionSchema,
       sequentialConditionSchema,
+      ifThenElseConditionSchema,
     ]),
   ),
 });

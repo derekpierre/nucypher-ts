@@ -1,38 +1,17 @@
 import { ETH_ADDRESS_REGEXP } from '@nucypher/shared';
 import { ethers } from 'ethers';
 import { z } from 'zod';
+import { AbiParameter } from 'abitype/zod';
 
 import { paramOrContextParamSchema } from './context';
 import { rpcConditionSchema } from './rpc';
-
-// TODO: Consider replacing with `z.unknown`:
-//    Since Solidity types are tied to Solidity version, we may not be able to accurately represent them in Zod.
-//    Alternatively, find a TS Solidity type lib.
-const EthBaseTypes: [string, ...string[]] = [
-  'bool',
-  'string',
-  'address',
-  'address payable',
-  ...Array.from({ length: 32 }, (_v, i) => `bytes${i + 1}`), // bytes1 through bytes32
-  'bytes',
-  ...Array.from({ length: 32 }, (_v, i) => `uint${8 * (i + 1)}`), // uint8 through uint256
-  ...Array.from({ length: 32 }, (_v, i) => `int${8 * (i + 1)}`), // int8 through int256
-];
-
-const functionAbiVariableSchema = z
-  .object({
-    name: z.string(),
-    type: z.enum(EthBaseTypes),
-    internalType: z.enum(EthBaseTypes), // TODO: Do we need to validate this?
-  })
-  .strict();
 
 const functionAbiSchema = z
   .object({
     name: z.string(),
     type: z.literal('function'),
-    inputs: z.array(functionAbiVariableSchema).min(0),
-    outputs: z.array(functionAbiVariableSchema).nonempty(),
+    inputs: z.array(AbiParameter).min(0),
+    outputs: z.array(AbiParameter).nonempty(),
     stateMutability: z.union([z.literal('view'), z.literal('pure')]),
   })
   .strict()

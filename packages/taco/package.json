@@ -43,6 +43,7 @@
     "@nucypher/nucypher-core": "*",
     "@nucypher/shared": "workspace:*",
     "@nucypher/taco-auth": "workspace:*",
+    "abitype": "^1.0.6",
     "ethers": "*",
     "semver": "^7.6.3",
     "zod": "*"

@@ -5,6 +5,7 @@ import { AbiParameter } from 'abitype/zod';
 
 import { paramOrContextParamSchema } from './context';
 import { rpcConditionSchema } from './rpc';
+import { parseAbi, parseAbiItem } from 'abitype';
 
 const functionAbiSchema = z
   .object({
@@ -48,6 +49,23 @@ const functionAbiSchema = z
   );
 
 export type FunctionAbiProps = z.infer<typeof functionAbiSchema>;
+
+export const humanReadableAbiSchema = z
+  .string().startsWith("function ")
+  .refine(
+    (abi) => {
+      try {
+        parseAbiItem(abi);
+        return true;
+      } catch (e) {
+        return false;
+      }
+    },
+    {
+      message: 'Invalid Human-Readable ABI format',
+    },
+  )
+  .transform(parseAbiItem);
 
 export const ContractConditionType = 'contract';
 export const contractConditionSchema = rpcConditionSchema

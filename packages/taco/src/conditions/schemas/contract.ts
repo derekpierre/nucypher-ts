@@ -5,9 +5,9 @@ import { AbiParameter } from 'abitype/zod';
 
 import { paramOrContextParamSchema } from './context';
 import { rpcConditionSchema } from './rpc';
-import { parseAbi, parseAbiItem } from 'abitype';
+import { parseAbiItem } from 'abitype';
 
-const functionAbiSchema = z
+const verboseAbiSchema = z
   .object({
     name: z.string(),
     type: z.literal('function'),
@@ -48,8 +48,6 @@ const functionAbiSchema = z
     },
   );
 
-export type FunctionAbiProps = z.infer<typeof functionAbiSchema>;
-
 export const humanReadableAbiSchema = z
   .string().startsWith("function ")
   .refine(
@@ -67,6 +65,10 @@ export const humanReadableAbiSchema = z
   )
   .transform(parseAbiItem);
 
+const abiSchema = z.union([verboseAbiSchema, humanReadableAbiSchema])
+
+export type FunctionAbiProps = z.infer<typeof abiSchema>;
+
 export const ContractConditionType = 'contract';
 export const contractConditionSchema = rpcConditionSchema
   .extend({
@@ -76,7 +78,7 @@ export const contractConditionSchema = rpcConditionSchema
     contractAddress: z.string().regex(ETH_ADDRESS_REGEXP).length(42),
     standardContractType: z.enum(['ERC20', 'ERC721']).optional(),
     method: z.string(),
-    functionAbi: functionAbiSchema.optional(),
+    functionAbi: abiSchema.optional(),
     parameters: z.array(paramOrContextParamSchema),
   })
   // Adding this custom logic causes the return type to be ZodEffects instead of ZodObject

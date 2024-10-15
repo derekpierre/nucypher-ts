@@ -16,6 +16,7 @@ import {
   CustomContextParam,
 } from '../../../src/conditions/context';
 import { testContractConditionObj, testFunctionAbi } from '../../test-utils';
+import { parseAbiItem } from 'abitype';
 
 describe('validation', () => {
   it('accepts on a valid schema', () => {
@@ -235,10 +236,17 @@ describe('supports custom function abi', async () => {
         stateMutability: 'pure',
       },
     },
-  ])('accepts well-formed functionAbi', ({ method, functionAbi }) => {
+    {
+      method: 'balanceOf',
+      functionAbi: 'function balanceOf(address _owner) view returns (uint256 balance)',
+    },
+  ])('accepts well-formed functionAbi', ({ method, functionAbi}) => {
     const result = ContractCondition.validate(contractConditionSchema, {
       ...contractConditionObj,
-      parameters: functionAbi.inputs.map((input) => `fake_parameter_${input}`), //
+      parameters:
+        typeof functionAbi === 'string'
+          ? ['fake_parameter']
+          : functionAbi.inputs.map((input) => `fake_parameter_${input}`),
       functionAbi: functionAbi as FunctionAbiProps,
       method,
     });
@@ -246,7 +254,11 @@ describe('supports custom function abi', async () => {
     expect(result.error).toBeUndefined();
     expect(result.data).toBeDefined();
     expect(result.data?.method).toEqual(method);
-    expect(result.data?.functionAbi).toEqual(functionAbi);
+    if (typeof functionAbi === "string") {
+      expect(result.data?.functionAbi).toEqual(parseAbiItem(functionAbi));
+    } else {
+      expect(result.data?.functionAbi).toEqual(functionAbi);
+    }
   });
 
   it.each([
@@ -335,6 +347,22 @@ describe('supports custom function abi', async () => {
       });
     },
   );
+
+  it('rejects malformed human-readable functionAbi', () => {
+    const result = ContractCondition.validate(contractConditionSchema, {
+      ...contractConditionObj,
+      method: 'invalidMethod',
+      functionAbi: 'function balance(_owner) invalid human-readable ABI',
+    });
+
+    expect(result.error).toBeDefined();
+    expect(result.data).toBeUndefined();
+    expect(result.error?.format()).toMatchObject({
+      functionAbi: {
+        _errors: ['Invalid Human-Readable ABI format'],
+      },
+    });
+  });
 
   it.each([
     {
